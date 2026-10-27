@@ -15,6 +15,8 @@ export const Route = createFileRoute("/leaderboard")({
       { property: "og:description", content: "Top players in Project Flipped." },
     ],
   }),
+  // Launcher data is client-rendered (desktop app); loaders fill the query cache.
+  ssr: false,
   loader: ({ context }) => context.queryClient.ensureQueryData(leaderboardQuery("GLOBAL")),
   component: LeaderboardPage,
 });

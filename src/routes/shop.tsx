@@ -15,6 +15,8 @@ export const Route = createFileRoute("/shop")({
       { property: "og:description", content: "Customize your Flipped experience." },
     ],
   }),
+  // Launcher data is client-rendered (desktop app); loaders fill the query cache.
+  ssr: false,
   loader: ({ context }) => context.queryClient.ensureQueryData(shopQuery),
   component: ShopPage,
 });

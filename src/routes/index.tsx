@@ -16,6 +16,8 @@ export const Route = createFileRoute("/")({
       { property: "og:description", content: "Chapter 3 Season 1 is now available." },
     ],
   }),
+  // Launcher data is client-rendered (desktop app); loaders fill the query cache.
+  ssr: false,
   loader: ({ context: { queryClient } }) =>
     Promise.all([
       queryClient.ensureQueryData(serversQuery),

@@ -13,6 +13,8 @@ export const Route = createFileRoute("/news")({
       { property: "og:description", content: "The latest from Project Flipped." },
     ],
   }),
+  // Launcher data is client-rendered (desktop app); loaders fill the query cache.
+  ssr: false,
   loader: ({ context }) => context.queryClient.ensureQueryData(newsQuery),
   component: NewsPage,
 });
