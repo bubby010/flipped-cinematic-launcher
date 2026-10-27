@@ -14,7 +14,7 @@ import type {
   UserProfile,
 } from "./types";
 
-const delay = <T>(v: T, ms = 120) => new Promise<T>((r) => setTimeout(() => r(v), ms));
+export const isDemoMode = !import.meta.env.VITE_API_BASE_URL;\n\nconst delay = <T>(v: T, ms = 120) => new Promise<T>((r) => setTimeout(() => r(v), ms));
 
 export async function getCurrentUser(): Promise<UserProfile> {
   return delay({ id: "u_1", username: "Player", displayName: "FLIPPED", status: "online" });

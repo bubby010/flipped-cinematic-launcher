@@ -29,15 +29,15 @@ function LeaderboardPage() {
   const { data, isFetching } = useQuery({ ...leaderboardQuery(tab), placeholderData: keepPreviousData });
 
   return (
-    <div className="px-14 pb-16 pt-24 2xl:px-20">
+    <div className="px-5 pb-12 pt-20 sm:px-8 sm:pb-16 sm:pt-24 lg:px-14 2xl:px-20">
       <PageHeader title="Leaderboard" subtitle="Top players in Project Flipped" />
-      <div className="mb-6 inline-flex rounded-sm border border-hairline bg-surface-1 p-1">
+      <div className="mb-6 flex w-fit max-w-full flex-wrap rounded-sm border border-hairline bg-surface-1 p-1">
         {tabs.map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
             className={cn(
-              "h-9 rounded-sm px-6 font-display tracking-[0.14em] transition-all duration-300",
+              "h-9 rounded-sm px-3 font-display text-xs tracking-[0.1em] transition-all duration-300 sm:px-6 sm:text-sm sm:tracking-[0.14em]",
               t === tab ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground",
             )}
           >

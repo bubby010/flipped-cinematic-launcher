@@ -25,7 +25,7 @@ function NewsPage() {
   const rest = data.filter((n) => n.id !== featured.id);
 
   return (
-    <div className="px-14 pb-16 pt-24 2xl:px-20">
+    <div className="px-5 pb-12 pt-20 sm:px-8 sm:pb-16 sm:pt-24 lg:px-14 2xl:px-20">
       <PageHeader title="News" subtitle="Updates, patch notes and community." />
       <article className="group relative mb-8 h-[420px] overflow-hidden rounded-md border border-hairline">
         <img
@@ -44,7 +44,7 @@ function NewsPage() {
           <LButton className="mt-6" size="sm">Read article</LButton>
         </div>
       </article>
-      <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {rest.map((n, i) => (
           <article key={n.id} className="group cursor-pointer">
             <Panel className="h-full overflow-hidden transition-transform duration-500 group-hover:-translate-y-1">

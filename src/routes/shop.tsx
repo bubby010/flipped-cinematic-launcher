@@ -30,7 +30,7 @@ function ShopPage() {
   const visible = items.filter((i) => i.category === cat);
 
   return (
-    <div className="px-14 pb-16 pt-24 2xl:px-20">
+    <div className="px-5 pb-12 pt-20 sm:px-8 sm:pb-16 sm:pt-24 lg:px-14 2xl:px-20">
       <PageHeader
         title="Shop"
         subtitle="Customize your Flipped experience."
@@ -41,7 +41,7 @@ function ShopPage() {
           </div>
         }
       />
-      <div className="mb-8 flex gap-8">
+      <div className="mb-8 flex flex-wrap gap-x-6 gap-y-3 sm:gap-8">
         {categories.map((c) => (
           <button
             key={c}
