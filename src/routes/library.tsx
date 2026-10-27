@@ -51,7 +51,7 @@ function LibraryPage() {
   ];
 
   return (
-    <div className="px-14 pb-16 pt-24 2xl:px-20">
+    <div className="px-5 pb-12 pt-20 sm:px-8 sm:pb-16 sm:pt-24 lg:px-14 2xl:px-20">
       <PageHeader title="Library" subtitle="Your Project Flipped builds" />
       <Panel className="group overflow-hidden shadow-card">
         <div className="relative h-80 overflow-hidden 2xl:h-96">
@@ -90,9 +90,9 @@ function LibraryPage() {
             <ProgressBar value={progress ?? 100} />
           </div>
         </div>
-        <dl className="grid grid-cols-5 border-t border-hairline">
+        <dl className="grid grid-cols-1 border-t border-hairline sm:grid-cols-2 lg:grid-cols-5">
           {meta.map(([k, v]) => (
-            <div key={k} className="border-r border-hairline px-10 py-5 last:border-r-0">
+            <div key={k} className="border-b border-hairline px-5 py-4 last:border-b-0 sm:px-6 lg:border-b-0 lg:border-r lg:px-10 lg:py-5 lg:last:border-r-0">
               <dt className="label-caps text-[10px] text-muted-foreground">{k}</dt>
               <dd className="mt-2 truncate font-mono text-xs text-foreground/90" title={v}>
                 {v}
