@@ -64,7 +64,7 @@ const players = ["PlayerOne", "Flipped", "Shadow", "Vanta", "Kinetic", "Halcyon"
 export async function getLeaderboard(region: ServerRegion | "GLOBAL"): Promise<LeaderboardEntry[]> {
   const seed = { GLOBAL: 0, "NA-EAST": 3, EU: 7, "NA-WEST": 11 }[region];
   const rows = players.map((_, i) => {
-    const name = i < 3 && region === "GLOBAL" ? players[i] : players[(i + seed) % players.length];
+    const name = (i < 3 && region === "GLOBAL" ? players[i] : players[(i + seed) % players.length]) ?? "Player";
     return {
       rank: i + 1,
       player: name,

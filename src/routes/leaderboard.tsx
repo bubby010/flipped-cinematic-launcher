@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { leaderboardQuery } from "@/services/queries";
 import type { ServerRegion } from "@/services/types";
@@ -24,7 +24,7 @@ const cols = "grid grid-cols-[80px_1fr_110px_110px_110px_130px] items-center px-
 
 function LeaderboardPage() {
   const [tab, setTab] = useState<(typeof tabs)[number]>("GLOBAL");
-  const { data, isFetching } = useQuery(leaderboardQuery(tab));
+  const { data, isFetching } = useQuery({ ...leaderboardQuery(tab), placeholderData: keepPreviousData });
 
   return (
     <div className="px-14 pb-16 pt-24 2xl:px-20">
