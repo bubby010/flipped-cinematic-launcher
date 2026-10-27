@@ -49,9 +49,9 @@ function SettingsPage() {
   }, [s.reduce, s.animations]);
 
   return (
-    <div className="px-14 pb-16 pt-24 2xl:px-20">
+    <div className="px-5 pb-12 pt-20 sm:px-8 sm:pb-16 sm:pt-24 lg:px-14 2xl:px-20">
       <PageHeader title="Settings" subtitle="Launcher and game preferences." />
-      <div className="grid grid-cols-[220px_1fr] gap-12">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-[180px_1fr] sm:gap-8 lg:grid-cols-[220px_1fr] lg:gap-12">
         <nav className="flex flex-col gap-1">
           {sections.map((x) => (
             <button
