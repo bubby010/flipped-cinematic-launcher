@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { LogIn, LogOut, Minus, Settings, Square, X } from "lucide-react";
 import { useState } from "react";
-import { beginDiscordLogin, logoutDiscord } from "@/services/launcher";
+import { beginDiscordLogin, launcherBridge, logoutDiscord } from "@/services/launcher";
 import { serversQuery, userQuery } from "@/services/queries";
 import { StatusDot } from "./ui";
 
