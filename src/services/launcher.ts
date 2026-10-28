@@ -1,7 +1,6 @@
 /**
- * Launcher service layer. Every function is async and returns mock data today.
- * Replace the bodies with real calls (LawinServer, FortMatchmaker, Discord OAuth,
- * updater, game launcher bridge) without touching UI components.
+ * Launcher service layer. Server status is checked against the hosted LawinServer;
+ * the other service functions remain mock data until their integrations are built.
  */
 import type {
   BuildInfo,
@@ -16,16 +15,41 @@ import type {
 
 const delay = <T>(v: T, ms = 120) => new Promise<T>((r) => setTimeout(() => r(v), ms));
 
+const LAWIN_SERVER_URL = "https://p01--lawinserver--wxsd2297cwp7.code.run";
+
 export async function getCurrentUser(): Promise<UserProfile> {
   return delay({ id: "u_1", username: "Player", displayName: "FLIPPED", status: "online" });
 }
 
 export async function getServerStatus(): Promise<ServerStatus[]> {
-  return delay([
-    { region: "NA-EAST", online: true, pingMs: 32, players: 1284 },
-    { region: "EU", online: true, pingMs: 87, players: 962 },
-    { region: "NA-WEST", online: true, pingMs: 54, players: 711 },
-  ]);
+  const startedAt = performance.now();
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), 5000);
+
+  try {
+    // LawinServer does not currently expose CORS headers, so no-cors can only
+    // confirm that the endpoint is reachable; it cannot read the HTTP response.
+    await fetch(`${LAWIN_SERVER_URL}/fortnite/api/version`, {
+      method: "GET",
+      mode: "no-cors",
+      cache: "no-store",
+      signal: controller.signal,
+    });
+
+    return [{
+      region: "EU",
+      online: true,
+      pingMs: Math.round(performance.now() - startedAt),
+    }];
+  } catch {
+    return [{
+      region: "EU",
+      online: false,
+      pingMs: 0,
+    }];
+  } finally {
+    window.clearTimeout(timeout);
+  }
 }
 
 export async function getInstalledBuild(): Promise<BuildInfo> {
