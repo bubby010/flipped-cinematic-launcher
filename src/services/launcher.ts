@@ -1,6 +1,6 @@
 /**
  * Launcher service layer. Server status is checked against the hosted LawinServer;
- * the other service functions remain mock data until their integrations are built.
+ * non-auth game data remains mock data until those integrations are built.
  */
 import type {
   BuildInfo,
@@ -15,10 +15,71 @@ import type {
 
 const delay = <T>(v: T, ms = 120) => new Promise<T>((r) => setTimeout(() => r(v), ms));
 
-const LAWIN_SERVER_URL = "https://p01--lawinserver--wxsd2297cwp7.code.run";
+export const LAWIN_SERVER_URL = "https://p01--lawinserver--wxsd2297cwp7.code.run";
 
-export async function getCurrentUser(): Promise<UserProfile> {
-  return delay({ id: "u_1", username: "Player", displayName: "FLIPPED", status: "online" });
+export type DiscordSessionUser = UserProfile & {
+  authenticated: boolean;
+  avatar: string | null;
+  discordId: string | null;
+};
+
+type DiscordMeResponse = {
+  authenticated: boolean;
+  user?: {
+    id?: string;
+    username?: string;
+    global_name?: string | null;
+    avatar?: string | null;
+  };
+};
+
+export async function getCurrentUser(): Promise<DiscordSessionUser> {
+  try {
+    const response = await fetch(`${LAWIN_SERVER_URL}/auth/me`, {
+      method: "GET",
+      credentials: "include",
+      cache: "no-store",
+    });
+    if (!response.ok) throw new Error(`Discord session check failed: HTTP ${response.status}`);
+    const data = (await response.json()) as DiscordMeResponse;
+    if (data.authenticated && data.user) {
+      return {
+        id: data.user.id ?? "discord-user",
+        username: data.user.username ?? "Discord user",
+        displayName: data.user.global_name || data.user.username || "Discord user",
+        status: "online",
+        authenticated: true,
+        avatar: data.user.avatar
+          ? `https://cdn.discordapp.com/avatars/${data.user.id}/${data.user.avatar}.png`
+          : null,
+        discordId: data.user.id ?? null,
+      };
+    }
+  } catch (error) {
+    console.warn("[auth] Unable to read Discord session", error);
+  }
+
+  return {
+    id: "guest",
+    username: "Guest",
+    displayName: "Guest",
+    status: "offline",
+    authenticated: false,
+    avatar: null,
+    discordId: null,
+  };
+}
+
+export function beginDiscordLogin(): void {
+  window.location.assign(`${LAWIN_SERVER_URL}/auth/discord`);
+}
+
+export async function logoutDiscord(): Promise<void> {
+  const response = await fetch(`${LAWIN_SERVER_URL}/auth/logout`, {
+    method: "POST",
+    credentials: "include",
+  });
+  if (!response.ok) throw new Error(`Discord logout failed: HTTP ${response.status}`);
 }
 
 export async function getServerStatus(): Promise<ServerStatus[]> {
