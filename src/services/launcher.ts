@@ -24,31 +24,29 @@ export async function getCurrentUser(): Promise<UserProfile> {
 export async function getServerStatus(): Promise<ServerStatus[]> {
   const startedAt = performance.now();
   const controller = new AbortController();
-  const timeout = window.setTimeout(() => controller.abort(), 5000);
+  const timeout = setTimeout(() => controller.abort(), 5000);
 
   try {
-    // LawinServer does not currently expose CORS headers, so no-cors can only
-    // confirm that the endpoint is reachable; it cannot read the HTTP response.
-    await fetch(`${LAWIN_SERVER_URL}/fortnite/api/version`, {
+    const response = await fetch(`${LAWIN_SERVER_URL}/api/health`, {
       method: "GET",
-      mode: "no-cors",
       cache: "no-store",
       signal: controller.signal,
     });
 
-    return [{
-      region: "EU",
-      online: true,
-      pingMs: Math.round(performance.now() - startedAt),
-    }];
+    if (!response.ok) {
+      throw new Error(`LawinServer health check failed: HTTP ${response.status}`);
+    }
+
+    const health: unknown = await response.json();
+    if (typeof health !== "object" || health === null || !("status" in health) || health.status !== "ok") {
+      throw new Error("LawinServer returned an invalid health response");
+    }
+
+    return [{ region: "EU", online: true, pingMs: Math.round(performance.now() - startedAt) }];
   } catch {
-    return [{
-      region: "EU",
-      online: false,
-      pingMs: 0,
-    }];
+    return [{ region: "EU", online: false, pingMs: 0 }];
   } finally {
-    window.clearTimeout(timeout);
+    clearTimeout(timeout);
   }
 }
 
