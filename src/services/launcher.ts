@@ -15,7 +15,7 @@ import type {
 
 const delay = <T>(v: T, ms = 120) => new Promise<T>((r) => setTimeout(() => r(v), ms));
 
-export const LAWIN_SERVER_URL = "https://p01--lawinserver--wxsd2297cwp7.code.run";
+export const LAWIN_SERVER_URL = "https://p01--lawinserver--54fsx454j7vx.code.run";
 
 export type DiscordSessionUser = UserProfile & {
   authenticated: boolean;
